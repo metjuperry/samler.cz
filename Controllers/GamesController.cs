@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,11 +9,12 @@ using samler.cz.Models;
 
 namespace samler.cz.Controllers
 {
-    public class HomeController : Controller
+    public class GamesController : Controller
     {
+        private const string talxisUrl = "~/games/talxis.html";
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public GamesController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
@@ -25,13 +26,9 @@ namespace samler.cz.Controllers
 
         public IActionResult Talxis()
         {
-            return View();
+            return Redirect(talxisUrl);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+
     }
 }

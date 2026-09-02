@@ -10,14 +10,19 @@ import headshot from '../assets/headshot.jpg';
 
 const allTalks = (await getCollection('talks')).map((t) => t.data);
 
-// Sort by the most precise time signal each talk has. Talks with neither a date
-// nor a year are community sessions whose date isn't confirmed — they render in a
-// compact list below rather than as full cards, so they can't read as padding.
+// Two lists, mirroring how the Sessionize profile is organised: talks on offer
+// (kept in Matěj's curated order, most important first) and the delivery record
+// (most recent or soonest first).
+const offered = allTalks
+  .filter((t) => t.status === 'offered')
+  .sort((a, b) => a.order - b.order);
+
 const sortKey = (t: (typeof allTalks)[number]) =>
   t.date ? t.date.getTime() : t.year ? new Date(t.year, 11, 31).getTime() : -Infinity;
 
-const dated = allTalks.filter((t) => t.date || t.year).sort((a, b) => sortKey(b) - sortKey(a));
-const undated = allTalks.filter((t) => !t.date && !t.year);
+const delivered = allTalks
+  .filter((t) => t.status === 'delivered')
+  .sort((a, b) => sortKey(b) - sortKey(a));
 
 const projects = (await getCollection('projects')).map((p) => p.data);
 const teamProjects = projects.filter((p) => p.group === 'team').sort((a, b) => a.order - b.order);
@@ -68,33 +73,25 @@ const links = [
     <div class="container">
       <div class="section-head">
         <p class="section-label">Speaking</p>
-        <h2>Conference talks</h2>
+        <h2>Talks I can give</h2>
         <p class="section-sub">
-          {dated.length + undated.length} talks across European and Czech Power Platform events,
-          in English and Czech. Organisers: everything you need is on the{' '}
+          What I'm currently offering, most important first. Organisers: bio, formats and
+          booking details are on the{' '}
           <a href="/speaking" class="accent">speaking page</a>.
         </p>
       </div>
 
       <div class="talk-list">
-        {dated.map((talk) => <TalkCard talk={talk} />)}
+        {offered.map((talk) => <TalkCard talk={talk} />)}
       </div>
 
-      {undated.length > 0 && (
-        <>
-          <h3 class="group-heading">Also presented at community and user group events</h3>
-          <p class="section-sub">Dates for these are still being confirmed.</p>
-          <div class="talk-compact-list">
-            {undated.map((talk) => (
-              <div class="talk-compact">
-                <span class="talk-compact-title">{talk.title}</span>
-                {talk.language === 'cs' && <span class="badge badge-lang">Czech</span>}
-                <span class="talk-compact-desc">{talk.summary}</span>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
+      <h3 class="group-heading">Where I've spoken</h3>
+      <p class="section-sub">
+        {delivered.length} outings across European and Czech Power Platform events.
+      </p>
+      <div class="talk-list" style="margin-top:14px">
+        {delivered.map((talk) => <TalkCard talk={talk} />)}
+      </div>
     </div>
   </section>
 

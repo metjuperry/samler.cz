@@ -1,6 +1,7 @@
 ---
 title: Power FX SDK Lessons Learned
-event: Community & user group talks
+status: offered
+order: 4
 format: session
 language: en
 topics: ["Power FX", "Dataverse"]

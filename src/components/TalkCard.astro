@@ -5,30 +5,45 @@ interface Props { talk: CollectionEntry<'talks'>['data']; }
 const { talk } = Astro.props;
 
 const when = talk.date
-  ? talk.date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })
+  ? talk.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
   : talk.year
     ? String(talk.year)
     : null;
 
+// Recomputed on every build, so a talk stops saying "Upcoming" the next time the
+// site is deployed after the date passes.
+const isUpcoming = !!talk.date && talk.date.getTime() > Date.now();
+
 const formatLabel: Record<string, string> = {
   session: 'Session', workshop: 'Workshop', lab: 'Hands-on lab', panel: 'Panel',
 };
+
+const details = [
+  talk.durationMinutes ? `${talk.durationMinutes} min` : null,
+  talk.level,
+  talk.track,
+].filter(Boolean);
 ---
 <article class="talk">
   <div class="talk-meta">
-    <span class="talk-event">
-      {talk.eventUrl
-        ? <a class="talk-event-link" href={talk.eventUrl} target="_blank" rel="noopener">{talk.event}</a>
-        : talk.event}
-    </span>
+    {talk.event && (
+      <span class="talk-event">
+        {talk.eventUrl
+          ? <a class="talk-event-link" href={talk.eventUrl} target="_blank" rel="noopener">{talk.event}</a>
+          : talk.event}
+      </span>
+    )}
     {when && <span class="talk-when">{when}</span>}
     {talk.location && <span class="talk-where">· {talk.location}</span>}
+    {isUpcoming && <span class="badge badge-upcoming">Upcoming</span>}
     {talk.format !== 'session' && <span class="badge badge-format">{formatLabel[talk.format]}</span>}
     {talk.language === 'cs' && <span class="badge badge-lang">Czech</span>}
   </div>
 
   <h3 class="talk-title">{talk.title}</h3>
   <p class="talk-desc">{talk.summary}</p>
+
+  {details.length > 0 && <p class="talk-detail">{details.join(' · ')}</p>}
 
   {talk.withSpeakers.length > 0 && (
     <p class="talk-with">With <strong>{talk.withSpeakers.join(', ')}</strong></p>

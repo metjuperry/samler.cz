@@ -219,6 +219,8 @@ section h3.group-heading {
 
 .talk-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.65; }
 
+.talk-detail { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; font-variant-numeric: tabular-nums; }
+
 .talk-with { font-size: 0.82rem; color: var(--text-muted); margin-top: 8px; }
 .talk-with strong { color: var(--text); font-weight: 500; }
 
@@ -240,6 +242,7 @@ section h3.group-heading {
 }
 
 .badge-format { background: var(--accent-soft); color: var(--accent); border-color: rgba(107, 143, 245, 0.22); }
+.badge-upcoming { background: rgba(88, 196, 140, 0.14); color: #6fce9b; border-color: rgba(88, 196, 140, 0.28); }
 .badge-lang { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border-color: var(--border); }
 .badge-role { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border-color: var(--border); text-transform: none; letter-spacing: 0; font-weight: 500; }
 .badge-role-author { background: rgba(88, 196, 140, 0.12); color: #6fce9b; border-color: rgba(88, 196, 140, 0.22); }

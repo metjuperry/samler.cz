@@ -1,6 +1,7 @@
 ---
 title: Power Cards a jak je použít
-event: Community & user group talks
+status: offered
+order: 6
 format: session
 language: cs
 topics: ["Power Cards", "Adaptive Cards"]

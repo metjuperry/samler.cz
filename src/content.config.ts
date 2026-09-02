@@ -10,7 +10,16 @@ const talks = defineCollection({
   loader: glob({ base: './src/content/talks', pattern: '**/*.md' }),
   schema: z.object({
     title: z.string(),
-    event: z.string(),
+    /**
+     * 'offered' = a talk on the menu, ordered by `order` to match the curated
+     * order on Sessionize. 'delivered' = an actual outing, ordered by date.
+     * Mirrors how the Sessionize profile is structured.
+     */
+    status: z.enum(['offered', 'delivered']).default('delivered'),
+    /** Curated position among offered talks; lower sorts first. */
+    order: z.number().int().default(100),
+    /** Required for delivered talks; offered talks have no event yet. */
+    event: z.string().optional(),
     eventUrl: z.string().url().optional(),
     location: z.string().optional(),
     date: z.coerce.date().optional(),
@@ -22,8 +31,16 @@ const talks = defineCollection({
     slidesUrl: z.string().url().optional(),
     videoUrl: z.string().url().optional(),
     topics: z.array(z.string()).default([]),
+    /** Organiser-facing detail, shown when known. */
+    durationMinutes: z.number().int().positive().optional(),
+    level: z.enum(['Introduction', 'Intermediate', 'Advanced', 'Expert']).optional(),
+    track: z.string().optional(),
     featured: z.boolean().default(false),
     summary: z.string(),
+  }).superRefine((t, ctx) => {
+    if (t.status === 'delivered' && !t.event) {
+      ctx.addIssue({ code: 'custom', message: 'delivered talks need an `event`', path: ['event'] });
+    }
   }),
 });
 

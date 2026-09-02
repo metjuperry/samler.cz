@@ -7,11 +7,18 @@ import profile from '../data/profile.json';
 import headshot from '../assets/headshot.jpg';
 
 const allTalks = (await getCollection('talks')).map((t) => t.data);
+
+const offered = allTalks
+  .filter((t) => t.status === 'offered')
+  .sort((a, b) => a.order - b.order);
+
 const sortKey = (t: (typeof allTalks)[number]) =>
   t.date ? t.date.getTime() : t.year ? new Date(t.year, 11, 31).getTime() : -Infinity;
-const dated = allTalks.filter((t) => t.date || t.year).sort((a, b) => sortKey(b) - sortKey(a));
+const delivered = allTalks
+  .filter((t) => t.status === 'delivered')
+  .sort((a, b) => sortKey(b) - sortKey(a));
 
-const events = [...new Set(dated.map((t) => t.event))].sort();
+const events = [...new Set(delivered.map((t) => t.event).filter(Boolean))].sort();
 ---
 
 <Base
@@ -51,6 +58,22 @@ const events = [...new Set(dated.map((t) => t.event))].sort();
             <li><strong>Czech</strong><span>Czech user groups and conferences</span></li>
           </ul>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">On offer</p>
+        <h2>Talks I can give</h2>
+        <p class="section-sub">
+          Listed in the order I'd recommend them. Happy to tailor length and depth — and
+          the Czech-language talks can be delivered in English.
+        </p>
+      </div>
+      <div class="talk-list">
+        {offered.map((talk) => <TalkCard talk={talk} />)}
       </div>
     </div>
   </section>
@@ -100,7 +123,7 @@ const events = [...new Set(dated.map((t) => t.event))].sort();
         <p class="section-sub">{events.join(' · ')}</p>
       </div>
       <div class="talk-list">
-        {dated.map((talk) => <TalkCard talk={talk} />)}
+        {delivered.map((talk) => <TalkCard talk={talk} />)}
       </div>
     </div>
   </section>

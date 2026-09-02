@@ -68,6 +68,11 @@ it after changing the headshot, `public/favicon.svg`, or the name/title/tagline 
 The OG image is what LinkedIn and Slack show when the site is shared, so check it after
 regenerating.
 
+`src/assets/headshot.jpg` is a 1000×1000 square cut from the full-frame studio portrait
+(`R5JM0459.jpg`, 4669×7000) with `extract({left: 217, top: 340, width: 4102, height: 4102})`
+— head-and-shoulders with enough headroom to survive the circular mask. Recrop from the
+original if you need a different framing; the master isn't committed.
+
 ## Before deploying
 
 ```bash

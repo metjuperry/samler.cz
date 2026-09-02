@@ -153,6 +153,7 @@ section { padding: 68px 0; }
   margin-bottom: 8px;
 }
 
+section h1,
 section h2 {
   font-size: 1.55rem;
   font-weight: 700;
@@ -326,7 +327,13 @@ section h3.group-heading {
 
 /* ── Speaking page ── */
 
-.speaker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 18px; }
+.speaker-grid {
+  display: grid;
+  /* min() keeps the 240px track from overflowing a container narrower than that */
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
 
 .card {
   border: 1px solid var(--border);
@@ -335,7 +342,9 @@ section h3.group-heading {
   padding: 20px 22px;
 }
 
-.card h3 { font-size: 0.95rem; font-weight: 600; color: var(--text-bright); margin-bottom: 10px; }
+.card h2,
+.card h3 {
+  overflow-wrap: anywhere; font-size: 0.95rem; font-weight: 600; color: var(--text-bright); margin-bottom: 10px; }
 
 .topic-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
 .topic-list li { font-size: 0.885rem; color: var(--text-muted); padding-left: 18px; position: relative; line-height: 1.55; }

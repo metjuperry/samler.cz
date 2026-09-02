@@ -22,7 +22,7 @@ const events = [...new Set(dated.map((t) => t.event))].sort();
     <div class="container">
       <div class="section-head">
         <p class="section-label">For organisers</p>
-        <h2>Speaking</h2>
+        <h1>Speaking</h1>
         <p class="section-sub">
           I speak about Power Platform from a developer's point of view — ALM, build systems,
           testing, and lately what changes when agents write the code. I present in{' '}
@@ -33,19 +33,19 @@ const events = [...new Set(dated.map((t) => t.event))].sort();
 
       <div class="speaker-grid">
         <div class="card">
-          <h3>Topics</h3>
+          <h2>Topics</h2>
           <ul class="topic-list">
             {profile.speaking.topics.map((t) => <li>{t}</li>)}
           </ul>
         </div>
         <div class="card">
-          <h3>Formats</h3>
+          <h2>Formats</h2>
           <ul class="format-list">
             {profile.speaking.formats.map((f) => (
               <li><strong>{f.name}</strong><span>{f.detail}</span></li>
             ))}
           </ul>
-          <h3 style="margin-top:22px">Languages</h3>
+          <h2 style="margin-top:22px">Languages</h2>
           <ul class="format-list">
             <li><strong>English</strong><span>Conferences across Europe</span></li>
             <li><strong>Czech</strong><span>Czech user groups and conferences</span></li>

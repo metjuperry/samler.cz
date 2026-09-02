@@ -1,0 +1,122 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import TalkCard from '../components/TalkCard.astro';
+import profile from '../data/profile.json';
+import headshot from '../assets/headshot.jpg';
+
+const allTalks = (await getCollection('talks')).map((t) => t.data);
+const sortKey = (t: (typeof allTalks)[number]) =>
+  t.date ? t.date.getTime() : t.year ? new Date(t.year, 11, 31).getTime() : -Infinity;
+const dated = allTalks.filter((t) => t.date || t.year).sort((a, b) => sortKey(b) - sortKey(a));
+
+const events = [...new Set(dated.map((t) => t.event))].sort();
+---
+
+<Base
+  title={`Speaking — ${profile.name}`}
+  description={`Speaker information for ${profile.name}: topics, session formats, bio, headshot and past Power Platform conference talks in English and Czech.`}
+>
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">For organisers</p>
+        <h2>Speaking</h2>
+        <p class="section-sub">
+          I speak about Power Platform from a developer's point of view — ALM, build systems,
+          testing, and lately what changes when agents write the code. I present in{' '}
+          <strong>English and Czech</strong>, solo or co-presenting, and I've run everything from
+          15-minute lightning talks to full-day hands-on labs.
+        </p>
+      </div>
+
+      <div class="speaker-grid">
+        <div class="card">
+          <h3>Topics</h3>
+          <ul class="topic-list">
+            {profile.speaking.topics.map((t) => <li>{t}</li>)}
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Formats</h3>
+          <ul class="format-list">
+            {profile.speaking.formats.map((f) => (
+              <li><strong>{f.name}</strong><span>{f.detail}</span></li>
+            ))}
+          </ul>
+          <h3 style="margin-top:22px">Languages</h3>
+          <ul class="format-list">
+            <li><strong>English</strong><span>Conferences across Europe</span></li>
+            <li><strong>Czech</strong><span>Czech user groups and conferences</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">Press kit</p>
+        <h2>Bio and headshot</h2>
+        <p class="section-sub">Copy these straight into your programme — no need to ask.</p>
+      </div>
+
+      <div class="bio-block">
+        <p class="bio-label">Short bio</p>
+        <p>{profile.bioShort}</p>
+      </div>
+
+      <div class="bio-block">
+        <p class="bio-label">Full bio</p>
+        {profile.bioLong.map((p) => <p>{p}</p>)}
+      </div>
+
+      <div class="asset-row">
+        <Image
+          class="asset-photo"
+          src={headshot}
+          alt={`${profile.name} headshot`}
+          width={192}
+          height={192}
+          loading="lazy"
+        />
+        <div>
+          <p class="section-sub" style="margin-bottom:8px">
+            <strong>{profile.name}</strong> — {profile.title}, {profile.company.name} · {profile.location}
+          </p>
+          <a class="cta-button cta-secondary" href={headshot.src} download>Download headshot</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">Track record</p>
+        <h2>Where I've spoken</h2>
+        <p class="section-sub">{events.join(' · ')}</p>
+      </div>
+      <div class="talk-list">
+        {dated.map((talk) => <TalkCard talk={talk} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="container contact-container">
+      <p class="section-label">Booking</p>
+      <h2>Invite me to speak</h2>
+      <p class="contact-text">
+        Tell me the event, the audience and the slot length, and I'll tell you honestly whether
+        I'm the right person for it.
+      </p>
+      <div class="cta-row">
+        <a href={`mailto:${profile.email}?subject=Speaking%20invitation`} class="cta-button">{profile.email}</a>
+        <a href={profile.links.sessionize} class="cta-button cta-secondary" target="_blank" rel="noopener">Sessionize profile</a>
+      </div>
+    </div>
+  </section>
+</Base>

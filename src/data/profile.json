@@ -1,0 +1,37 @@
+{
+  "name": "Matěj Samler",
+  "title": "Staff Software Engineer",
+  "company": { "name": "NETWORG", "url": "https://www.networg.com" },
+  "location": "Prague, Czechia",
+  "email": "matej@samler.cz",
+  "languages": ["English", "Czech"],
+  "tagline": "I build on Power Platform from a developer's seat, not the maker's.",
+  "bioShort": "Staff Software Engineer at NETWORG. I work on Power Platform extensibility — plugins, PCFs, and the ALM tooling around them — and I'm currently going deep on agentic engineering for the platform.",
+  "bioLong": [
+    "I'm a Staff Software Engineer at NETWORG with hands-on experience across the whole Power Platform — plugins, Power Automate, PCFs, Power Apps. Whatever corner of the platform a problem lives in, I've usually been there.",
+    "My focus is pro development: building robust, extensible solutions from a developer's perspective rather than clicking through the maker experience. In practice that means source control, real build systems, testable code, and a fast local inner loop — the things that let a Power Platform team work like a software team.",
+    "Lately I've been going deep on the agentic side of the platform: designing AI-driven, agent-based approaches to extend what Power Platform can do, and working out how you validate behaviour when an agent is the one changing your code."
+  ],
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/metju-samler/",
+    "github": "https://github.com/metjuperry",
+    "sessionize": "https://sessionize.com/matej-samler/",
+    "blog": "https://blog.networg.com/author/matej-samler/"
+  },
+  "speaking": {
+    "topics": [
+      "Power Platform ALM: source control, build systems and CI/CD",
+      "The developer inner loop — local builds, early bound types, unit testing plugins and PCF",
+      "Agentic engineering on Power Platform",
+      "Testing and validating behaviour when AI changes your code",
+      "Integrations: Custom Connectors, Dataflows and Virtual Tables",
+      "PCF and Power Apps Component Framework",
+      "Power FX SDK and low-code plugins"
+    ],
+    "formats": [
+      { "name": "Conference session", "detail": "45–60 minutes, level 200–400" },
+      { "name": "Hands-on lab", "detail": "Half or full day, attendees build alongside" },
+      { "name": "Workshop", "detail": "Multi-instructor, deep dive on developer ALM" }
+    ]
+  }
+}

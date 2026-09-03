@@ -5,7 +5,6 @@ eventUrl: https://power2025.updatedays.cz/workshop/en
 location: Prague, Czechia
 year: 2025
 format: workshop
-language: en
 withSpeakers: ["Scott Durow", "Eric Regnier", "Parvez Ghumra"]
 topics: ["ALM", "CI/CD", "Testing"]
 featured: true

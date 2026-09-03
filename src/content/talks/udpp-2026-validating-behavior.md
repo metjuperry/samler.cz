@@ -5,7 +5,6 @@ eventUrl: https://power.updatedays.cz/schedule/en/validating-behavior-after-ai-c
 location: Prague, Czechia
 date: 2026-04-28
 format: session
-language: en
 withSpeakers: ["Julie Koťátková"]
 topics: ["Testing", "AI", "BDD", "Code Apps"]
 featured: true

@@ -5,7 +5,6 @@ eventUrl: https://espc.tech/conference/eppc-2026/programme/developer-alm-lab-sou
 location: Vienna, Austria
 year: 2025
 format: lab
-language: en
 withSpeakers: ["Tomáš Prokop"]
 topics: ["ALM", "Dataverse Solution Framework", "Azure DevOps", "GitHub"]
 featured: true

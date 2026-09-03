@@ -26,7 +26,6 @@ const talks = defineCollection({
     // `year` covers talks where the edition is known but the exact day isn't.
     year: z.number().int().min(2000).max(2100).optional(),
     format: z.enum(['session', 'workshop', 'lab', 'panel']).default('session'),
-    language: z.enum(['en', 'cs']).default('en'),
     withSpeakers: z.array(z.string()).default([]),
     slidesUrl: z.string().url().optional(),
     videoUrl: z.string().url().optional(),

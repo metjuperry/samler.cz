@@ -5,7 +5,6 @@ eventUrl: https://power2025.updatedays.cz/schedule/en/integrations-with-custom-c
 location: Prague, Czechia
 year: 2025
 format: session
-language: en
 withSpeakers: ["Jan Koštejn"]
 topics: ["Custom Connectors", "Dataflows", "Virtual Tables", "Integration"]
 summary: >-

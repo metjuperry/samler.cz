@@ -5,7 +5,6 @@ eventUrl: https://power.updatedays.cz/schedule/en/setting-up-developer-enviromen
 location: Prague, Czechia
 date: 2026-04-28
 format: session
-language: en
 withSpeakers: ["Tomáš Prokop"]
 topics: ["ALM", "MSBuild", "Testing", "Dataverse"]
 featured: true

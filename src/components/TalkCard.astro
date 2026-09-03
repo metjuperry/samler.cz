@@ -37,7 +37,6 @@ const details = [
     {talk.location && <span class="talk-where">· {talk.location}</span>}
     {isUpcoming && <span class="badge badge-upcoming">Upcoming</span>}
     {talk.format !== 'session' && <span class="badge badge-format">{formatLabel[talk.format]}</span>}
-    {talk.language === 'cs' && <span class="badge badge-lang">Czech</span>}
   </div>
 
   <h3 class="talk-title">{talk.title}</h3>

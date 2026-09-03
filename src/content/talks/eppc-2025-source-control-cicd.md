@@ -5,7 +5,6 @@ eventUrl: https://espc.tech/conference/eppc-vienna-2025/programme/source-control
 location: Vienna, Austria
 year: 2025
 format: session
-language: en
 withSpeakers: ["Tomáš Prokop"]
 topics: ["ALM", "Monorepo", "MSBuild", "Azure DevOps"]
 summary: >-

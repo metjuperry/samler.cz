@@ -5,7 +5,6 @@ eventUrl: https://www.wug.cz/brno/akce/1915-Low-Code-is-Dead-Long-Live-Vibe-Code
 location: FIT VUT, Brno, Czechia
 date: 2026-09-02
 format: session
-language: cs
 topics: ["Vibe coding", "AI", "Governance", "Power Platform"]
 featured: true
 summary: >-

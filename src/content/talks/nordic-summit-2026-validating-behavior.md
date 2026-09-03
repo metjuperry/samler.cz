@@ -9,7 +9,6 @@ format: session
 durationMinutes: 90
 level: Advanced
 track: Makers & Developers
-language: en
 topics: ["Testing", "AI", "Playwright", "Gherkin", "Code Apps"]
 featured: true
 summary: >-

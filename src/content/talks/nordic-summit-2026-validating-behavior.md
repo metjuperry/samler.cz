@@ -11,7 +11,7 @@ level: Advanced
 track: Makers & Developers
 topics: ["Testing", "AI", "Playwright", "Gherkin", "Code Apps"]
 summary: >-
-  UI testing for Power Platform has always been painful — thin tooling, heavy upfront
+  UI testing for Power Platform has always been painful - thin tooling, heavy upfront
   effort, and tests that break with every form change. This deep dive uses LLMs to
   generate stable test code from natural-language scenarios instead. Why UI-level tests
   beat unit tests once AI writes the code: an agent will happily adjust the code and the

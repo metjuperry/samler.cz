@@ -4,5 +4,5 @@ event: Community & user group talks
 format: session
 topics: ["PCF", "Power Apps"]
 summary: >-
-  A rapid-fire introduction to the Power Apps Component Framework — building a PCF control live, from nothing.
+  A rapid-fire introduction to the Power Apps Component Framework - building a PCF control live, from nothing.
 ---

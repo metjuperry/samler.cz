@@ -3,23 +3,26 @@ title: "Full Stack Solutions with Code Apps: Source Control, Build System and CI
 status: offered
 order: 3
 format: session
-topics: ["ALM", "Code Apps", "Monorepo", "MSBuild", "CI/CD"]
+topics: ["ALM", "Code Apps", "React", "Monorepo", "CI/CD"]
 featured: true
 summary: >-
-  An update to the ALM talk I've given at EPPC and Update Days, rebuilt around
-  Code Apps — the addition that finally makes "full stack" a meaningful phrase on
-  Power Platform rather than a joke.
+  An update to the ALM talk I've given at EPPC and Update Days, built around Code
+  Apps: live coding a complete full stack Power Platform solution from scratch. A
+  React Code Apps frontend in TypeScript, C# Dataverse plugins for server-side
+  validation, custom connectors, Power Automate handling background jobs, and
+  Package Deployer shipping all of it as one unit. The coherent architecture
+  picture that the documentation, split across a dozen separate feature pages,
+  doesn't give you.
 
-  We manage a real project as a monorepo: a Code App front end, plugins, PCFs,
-  connectors and solution components, all living in one Git repository instead
-  of scattered across separate solution exports. MSBuild ties the build
-  together, early-bound types keep the plugin code honest, and a real
-  multi-developer workflow — branching, PR checks, release management — carries
-  all of it through to deployment, alongside the infrastructure and
-  configuration data it depends on.
+  You'll see the real implementation: plugins enforcing transactional safety
+  that client-side validation can't guarantee on its own, a monorepo holding
+  frontend and backend code together, GitHub Copilot generating across the
+  whole stack against custom instructions, and deployment automation carrying
+  changes from development through to production.
 
-  The difference from the source-control-and-CI/CD talks I've given before: Code
-  Apps means the front end is finally regular source code, not something bolted
-  on through a separate maker tool, so the pipeline can treat the whole stack —
-  UI included — the way any other software team would treat theirs.
+  And the developer workflow behind it: a VS Code workspace set up for a fast
+  local inner loop, an outer loop of automated deployments, a version control
+  strategy for the solution files everyone forgets to plan for, and what code
+  review looks like when an agent generated part of the change, across
+  frontend and backend at once.
 ---

@@ -135,6 +135,18 @@ a { color: inherit; text-decoration: none; }
 
 .pill:hover { color: var(--accent-hover); border-color: var(--accent-line); background: rgba(107, 143, 245, 0.06); }
 
+/* One pill in the row gets to stand out - LinkedIn is where an organiser or
+   recruiter actually follows up. A saturated fill in the same hue as --accent,
+   but darkened until white text clears WCAG AA (7.5:1) - the base --accent is
+   too light to pass at 4.5:1 with white on top of it. */
+.pill-accent {
+  color: #fff;
+  background: #0f43d7;
+  border-color: #0f43d7;
+}
+
+.pill-accent:hover { color: #fff; background: #1550ee; border-color: #1550ee; }
+
 .accent { color: var(--accent); transition: color 0.15s; }
 .accent:hover { color: var(--accent-hover); }
 

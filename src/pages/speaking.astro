@@ -22,7 +22,7 @@ const events = [...new Set(delivered.map((t) => t.event).filter(Boolean))].sort(
 ---
 
 <Base
-  title={`Speaking — ${profile.name}`}
+  title={`Speaking - ${profile.name}`}
   description={`Speaker information for ${profile.name}: topics, session formats, bio, headshot and past Power Platform conference talks in English and Czech.`}
 >
   <section>
@@ -31,7 +31,7 @@ const events = [...new Set(delivered.map((t) => t.event).filter(Boolean))].sort(
         <p class="section-label">For organisers</p>
         <h1>Speaking</h1>
         <p class="section-sub">
-          I speak about Power Platform from a developer's point of view — ALM, build systems,
+          I speak about Power Platform from a developer's point of view - ALM, build systems,
           testing, and lately what changes when agents write the code. I present in{' '}
           <strong>English and Czech</strong>, solo or co-presenting, and I've run everything from
           15-minute lightning talks to full-day hands-on labs.
@@ -83,7 +83,7 @@ const events = [...new Set(delivered.map((t) => t.event).filter(Boolean))].sort(
       <div class="section-head">
         <p class="section-label">Press kit</p>
         <h2>Bio and headshot</h2>
-        <p class="section-sub">Copy these straight into your programme — no need to ask.</p>
+        <p class="section-sub">Copy these straight into your programme - no need to ask.</p>
       </div>
 
       <div class="bio-block">
@@ -107,7 +107,7 @@ const events = [...new Set(delivered.map((t) => t.event).filter(Boolean))].sort(
         />
         <div>
           <p class="section-sub" style="margin-bottom:8px">
-            <strong>{profile.name}</strong> — {profile.title}, {profile.company.name} · {profile.location}
+            <strong>{profile.name}</strong> - {profile.title}, {profile.company.name} · {profile.location}
           </p>
           <a class="cta-button cta-secondary" href={headshot.src} download>Download headshot</a>
         </div>

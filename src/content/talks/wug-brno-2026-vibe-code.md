@@ -8,7 +8,7 @@ format: session
 topics: ["Vibe coding", "AI", "Governance", "Power Platform"]
 summary: >-
   In September 2025 Charles Lamanna, CVP at Microsoft, told the Power Platform
-  Conference that "low code is dead — as we know it," with vibe coding as its
+  Conference that "low code is dead - as we know it," with vibe coding as its
   successor: a faster, more flexible way to build apps over enterprise data. What
   vibe coding can actually do inside Power Platform, how it follows on from the
   low-code world we already know, and how you govern and secure the apps that come

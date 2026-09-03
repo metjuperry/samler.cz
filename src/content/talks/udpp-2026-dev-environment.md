@@ -8,7 +8,7 @@ format: session
 withSpeakers: ["Tomáš Prokop"]
 topics: ["ALM", "MSBuild", "Testing", "Dataverse"]
 summary: >-
-  The developer inner loop — the fast local cycle before code reaches CI/CD.
+  The developer inner loop - the fast local cycle before code reaches CI/CD.
   Source controlling Dataverse solutions, MSBuild-based local builds, generating
   version numbers from Git history, early bound types, running validation locally,
   unit testing plugins and PCF controls, and cutting the dependency on long-lived

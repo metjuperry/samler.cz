@@ -9,6 +9,6 @@ stars: 6046
 group: external
 order: 2
 summary: >-
-  The official Azure SDK for .NET — the library behind most .NET integrations with
+  The official Azure SDK for .NET - the library behind most .NET integrations with
   Azure services.
 ---

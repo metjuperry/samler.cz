@@ -45,7 +45,7 @@ const talks = defineCollection({
 
 /**
  * A project. `role` is required so every card states Matěj's actual relationship
- * to the repo — author, maintainer, or contributor. See README for why.
+ * to the repo - author, maintainer, or contributor. See README for why.
  */
 const projects = defineCollection({
   loader: glob({ base: './src/content/projects', pattern: '**/*.md' }),

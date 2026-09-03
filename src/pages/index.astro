@@ -32,7 +32,7 @@ const personalProjects = projects.filter((p) => p.group === 'personal').sort((a,
 const sortedPosts = [...posts].sort((a, b) => b.date.localeCompare(a.date));
 
 const links = [
-  { href: profile.links.linkedin, label: 'LinkedIn' },
+  { href: profile.links.linkedin, label: 'LinkedIn', accent: true },
   { href: profile.links.github, label: 'GitHub' },
   { href: profile.links.sessionize, label: 'Sessionize' },
   { href: `mailto:${profile.email}`, label: 'Email' },
@@ -40,7 +40,7 @@ const links = [
 ---
 
 <Base
-  title={`${profile.name} — Power Platform engineer & speaker`}
+  title={`${profile.name} - Power Platform engineer & speaker`}
   description={profile.bioShort}
 >
   <header class="hero">
@@ -63,7 +63,14 @@ const links = [
         <p class="hero-bio">{profile.bioLong[1]}</p>
         <nav class="hero-links" aria-label="Elsewhere">
           {links.map((l) => (
-            <a class="pill" href={l.href} target={l.href.startsWith('mailto') ? undefined : '_blank'} rel="noopener">{l.label}</a>
+            <a
+              class={`pill${l.accent ? ' pill-accent' : ''}`}
+              href={l.href}
+              target={l.href.startsWith('mailto') ? undefined : '_blank'}
+              rel="noopener"
+            >
+              {l.label}
+            </a>
           ))}
         </nav>
       </div>
@@ -87,9 +94,7 @@ const links = [
       </div>
 
       <h3 class="group-heading">Where I've spoken</h3>
-      <p class="section-sub">
-        {delivered.length} outings across European and Czech Power Platform events.
-      </p>
+      <p class="section-sub">Across European and Czech Power Platform events.</p>
       <div class="talk-list" style="margin-top:14px">
         {delivered.map((talk) => <TalkCard talk={talk} />)}
       </div>
@@ -109,7 +114,7 @@ const links = [
       <h3 class="group-heading">The TALXIS developer stack</h3>
       <p class="section-sub">
         Open-source Power Platform tooling built by my team at NETWORG. It's the toolchain
-        behind my ALM talks and labs — I contribute to it, and I teach it.
+        behind my ALM talks and labs - I contribute to it, and I teach it.
       </p>
       <div class="project-grid">
         {teamProjects.map((project) => <ProjectCard project={project} />)}
@@ -119,7 +124,7 @@ const links = [
         <>
           <h3 class="group-heading">Contributions to other open source</h3>
           <p class="section-sub">
-            Merged pull requests to projects I don't maintain — each card links straight
+            Merged pull requests to projects I don't maintain - each card links straight
             to the PR.
           </p>
           <div class="project-grid">
@@ -170,7 +175,7 @@ const links = [
       <h2>Get in touch</h2>
       <p class="contact-text">
         Speaking invitation, a Power Platform problem you're stuck on, or just want to compare
-        notes on developer tooling — I'm happy to hear from you.
+        notes on developer tooling - I'm happy to hear from you.
       </p>
       <div class="cta-row">
         <a href={`mailto:${profile.email}`} class="cta-button">{profile.email}</a>

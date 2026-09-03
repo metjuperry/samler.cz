@@ -11,7 +11,7 @@ summary: >-
   Going past the basics of native Git source control integration in Dataverse:
   managing Power Platform projects as monorepos, bringing plugins, form scripts,
   PCFs, connectors and solution components together, setting up an MSBuild build
-  process, and establishing a real multi-developer workflow — branching strategy,
+  process, and establishing a real multi-developer workflow - branching strategy,
   conflict resolution, PR quality checks, release management and automated
   deployment of code, infrastructure and configuration data.
 ---

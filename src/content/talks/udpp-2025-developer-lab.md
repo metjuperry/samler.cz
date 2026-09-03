@@ -9,6 +9,6 @@ withSpeakers: ["Scott Durow", "Eric Regnier", "Parvez Ghumra"]
 topics: ["ALM", "CI/CD", "Testing"]
 summary: >-
   A full-day workshop on improving developer productivity through continuous
-  integration, automation and testing frameworks — building sustainable workflows
+  integration, automation and testing frameworks - building sustainable workflows
   that hold up over the long life of a Power Platform product.
 ---

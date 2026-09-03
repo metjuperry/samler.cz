@@ -25,7 +25,7 @@ const details = [
 ].filter(Boolean);
 
 // A YAML folded scalar (`>-`) already collapses ordinary line-wraps into spaces,
-// so what's left of a blank line in the source is a single `\n` — that's the
+// so what's left of a blank line in the source is a single `\n` - that's the
 // paragraph break, not `\n\n`. Split on it so each paragraph renders as its own
 // <p> instead of running together as one wall of text.
 const paragraphs = talk.summary.split(/\n+/);

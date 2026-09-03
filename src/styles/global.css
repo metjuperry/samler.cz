@@ -218,6 +218,19 @@ section h3.group-heading {
 }
 
 .talk-desc { font-size: 0.875rem; color: var(--text-muted); line-height: 1.65; }
+.talk-desc + .talk-desc { margin-top: 12px; }
+
+/* Flagship talks: bigger stage, bigger card. Bigger type, more breathing room,
+   an accent rail so they read as the headline act rather than more list items. */
+.talk-featured {
+  padding: 30px 32px;
+  border-left: 3px solid var(--accent);
+  background: linear-gradient(180deg, rgba(107, 143, 245, 0.05), transparent 40%);
+}
+
+.talk-featured .talk-title { font-size: 1.2rem; margin-bottom: 10px; }
+.talk-featured .talk-desc { font-size: 0.95rem; color: var(--text); line-height: 1.75; }
+.talk-featured .talk-desc + .talk-desc { margin-top: 14px; }
 
 .talk-detail { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; font-variant-numeric: tabular-nums; }
 
@@ -420,4 +433,6 @@ footer { padding: 28px 0; border-top: 1px solid var(--border); }
   .post-title { grid-column: 1; }
   .post-arrow { grid-row: 1; }
   .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+  .talk-featured { padding: 22px 20px; }
+  .talk-featured .talk-title { font-size: 1.08rem; }
 }

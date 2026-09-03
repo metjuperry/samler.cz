@@ -1,7 +1,6 @@
 ---
 title: Power Cards, and How to Use Them
-status: offered
-order: 6
+event: Community & user group talks
 format: session
 topics: ["Power Cards", "Adaptive Cards"]
 summary: >-

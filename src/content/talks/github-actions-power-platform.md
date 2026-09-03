@@ -1,7 +1,6 @@
 ---
 title: GitHub Actions for Power Platform
-status: offered
-order: 7
+event: Community & user group talks
 format: session
 topics: ["GitHub Actions", "CI/CD", "ALM"]
 summary: >-

@@ -7,7 +7,6 @@ year: 2025
 format: lab
 withSpeakers: ["Tomáš Prokop"]
 topics: ["ALM", "Dataverse Solution Framework", "Azure DevOps", "GitHub"]
-featured: true
 summary: >-
   A hands-on lab on managing the lifecycle of Power Platform applications with the
   Dataverse Solution Framework — Pipelines, Catalog and Git integration, where they

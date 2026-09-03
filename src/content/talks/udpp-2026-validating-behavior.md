@@ -7,7 +7,6 @@ date: 2026-04-28
 format: session
 withSpeakers: ["Julie Koťátková"]
 topics: ["Testing", "AI", "BDD", "Code Apps"]
-featured: true
 summary: >-
   Two complementary testing approaches for Power Platform: TDD with mocking
   frameworks for frontend and backend code, and AI-assisted BDD acceptance tests

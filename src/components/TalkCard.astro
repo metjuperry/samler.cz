@@ -23,8 +23,14 @@ const details = [
   talk.level,
   talk.track,
 ].filter(Boolean);
+
+// A YAML folded scalar (`>-`) already collapses ordinary line-wraps into spaces,
+// so what's left of a blank line in the source is a single `\n` — that's the
+// paragraph break, not `\n\n`. Split on it so each paragraph renders as its own
+// <p> instead of running together as one wall of text.
+const paragraphs = talk.summary.split(/\n+/);
 ---
-<article class="talk">
+<article class={`talk${talk.featured ? ' talk-featured' : ''}`}>
   <div class="talk-meta">
     {talk.event && (
       <span class="talk-event">
@@ -40,7 +46,7 @@ const details = [
   </div>
 
   <h3 class="talk-title">{talk.title}</h3>
-  <p class="talk-desc">{talk.summary}</p>
+  {paragraphs.map((p) => <p class="talk-desc">{p}</p>)}
 
   {details.length > 0 && <p class="talk-detail">{details.join(' · ')}</p>}
 

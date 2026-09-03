@@ -7,7 +7,6 @@ date: 2026-04-28
 format: session
 withSpeakers: ["Tomáš Prokop"]
 topics: ["ALM", "MSBuild", "Testing", "Dataverse"]
-featured: true
 summary: >-
   The developer inner loop — the fast local cycle before code reaches CI/CD.
   Source controlling Dataverse solutions, MSBuild-based local builds, generating

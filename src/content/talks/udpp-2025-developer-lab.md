@@ -7,7 +7,6 @@ year: 2025
 format: workshop
 withSpeakers: ["Scott Durow", "Eric Regnier", "Parvez Ghumra"]
 topics: ["ALM", "CI/CD", "Testing"]
-featured: true
 summary: >-
   A full-day workshop on improving developer productivity through continuous
   integration, automation and testing frameworks — building sustainable workflows

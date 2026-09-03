@@ -10,7 +10,6 @@ durationMinutes: 90
 level: Advanced
 track: Makers & Developers
 topics: ["Testing", "AI", "Playwright", "Gherkin", "Code Apps"]
-featured: true
 summary: >-
   UI testing for Power Platform has always been painful — thin tooling, heavy upfront
   effort, and tests that break with every form change. This deep dive uses LLMs to

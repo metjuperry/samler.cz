@@ -1,7 +1,6 @@
 ---
 title: PCF in 15 Minutes
-status: offered
-order: 5
+event: Community & user group talks
 format: session
 topics: ["PCF", "Power Apps"]
 summary: >-

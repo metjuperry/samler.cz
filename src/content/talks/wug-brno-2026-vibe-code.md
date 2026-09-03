@@ -6,7 +6,6 @@ location: FIT VUT, Brno, Czechia
 date: 2026-09-02
 format: session
 topics: ["Vibe coding", "AI", "Governance", "Power Platform"]
-featured: true
 summary: >-
   In September 2025 Charles Lamanna, CVP at Microsoft, told the Power Platform
   Conference that "low code is dead — as we know it," with vibe coding as its

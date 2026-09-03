@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { project: CollectionEntry<'projects'>['data']; }
+const { project } = Astro.props;
+
+const roleLabel: Record<string, string> = {
+  author: 'Author',
+  maintainer: 'Maintainer',
+  contributor: 'Contributor',
+  team: 'Team project',
+};
+const langClass = `lang lang-${project.language.toLowerCase().replace('#', 'sharp').replace(/[^a-z]/g, '')}`;
+---
+<a class="project-card" href={project.repo} target="_blank" rel="noopener">
+  <div class="project-header">
+    <h4>{project.name}</h4>
+    <span class={langClass}>{project.language}</span>
+  </div>
+
+  <p>{project.summary}</p>
+
+  {project.roleNote && <p class="project-role-note">{project.roleNote}</p>}
+
+  <div class="project-foot">
+    <span class={`badge badge-role${project.role === 'author' ? ' badge-role-author' : ''}`}>
+      {roleLabel[project.role]}
+    </span>
+    <span>@{project.org}</span>
+    {project.stars > 0 && <span class="stars">★ {project.stars}</span>}
+  </div>
+</a>

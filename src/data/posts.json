@@ -1,0 +1,44 @@
+[
+  {
+    "title": "Example of using Power FX SDK, talking to Dataverse and implementing custom functions",
+    "url": "https://blog.networg.com/2023/09/01/example-of-using-power-fx-sdk-talking-to-dataverse-and-implementing-custom-functions/",
+    "date": "2023-09-01",
+    "language": "en"
+  },
+  {
+    "title": "Custom Connector suddenly unauthorized - Fix/Workaround",
+    "url": "https://blog.networg.com/2020/11/19/custom-connector-unauthorized/",
+    "date": "2020-11-19",
+    "language": "en"
+  },
+  {
+    "title": "Power Automate triggers inside of a loop",
+    "url": "https://blog.networg.com/2020/06/25/power-automate-triggers-inside-of-a-loop/",
+    "date": "2020-06-25",
+    "language": "en"
+  },
+  {
+    "title": "Solution Import Failure Message: Cannot add a Root Component 80",
+    "url": "https://blog.networg.com/2019/09/16/solution-import-failure-message-cannot-add-a-root-component-80/",
+    "date": "2019-09-16",
+    "language": "en"
+  },
+  {
+    "title": "Conditional groups across different linked entities in FetchXML",
+    "url": "https://blog.networg.com/2019/07/10/conditional-groups-across-different-linked-entities-in-fetchxml/",
+    "date": "2019-07-10",
+    "language": "en"
+  },
+  {
+    "title": "Dynamics 365 Workflow – Why do we activate instead of publishing and why lookups lie",
+    "url": "https://blog.networg.com/2019/04/08/dynamics-365-workflow-why-do-we-activate-instead-of-publishing-and-why-lookups-lie/",
+    "date": "2019-04-08",
+    "language": "en"
+  },
+  {
+    "title": "Úvod do Microsoft Cognitive Services",
+    "url": "https://blog.networg.com/2018/02/28/uvod-do-microsoft-cognitive-services/",
+    "date": "2018-02-28",
+    "language": "cs"
+  }
+]

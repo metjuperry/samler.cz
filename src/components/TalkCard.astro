@@ -1,0 +1,63 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { talk: CollectionEntry<'talks'>['data']; }
+const { talk } = Astro.props;
+
+const when = talk.date
+  ? talk.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+  : talk.year
+    ? String(talk.year)
+    : null;
+
+// Recomputed on every build, so a talk stops saying "Upcoming" the next time the
+// site is deployed after the date passes.
+const isUpcoming = !!talk.date && talk.date.getTime() > Date.now();
+
+const formatLabel: Record<string, string> = {
+  session: 'Session', workshop: 'Workshop', lab: 'Hands-on lab', panel: 'Panel',
+};
+
+const details = [
+  talk.durationMinutes ? `${talk.durationMinutes} min` : null,
+  talk.level,
+  talk.track,
+].filter(Boolean);
+
+// A YAML folded scalar (`>-`) already collapses ordinary line-wraps into spaces,
+// so what's left of a blank line in the source is a single `\n` - that's the
+// paragraph break, not `\n\n`. Split on it so each paragraph renders as its own
+// <p> instead of running together as one wall of text.
+const paragraphs = talk.summary.split(/\n+/);
+---
+<article class={`talk${talk.featured ? ' talk-featured' : ''}`}>
+  <div class="talk-meta">
+    {talk.event && (
+      <span class="talk-event">
+        {talk.eventUrl
+          ? <a class="talk-event-link" href={talk.eventUrl} target="_blank" rel="noopener">{talk.event}</a>
+          : talk.event}
+      </span>
+    )}
+    {when && <span class="talk-when">{when}</span>}
+    {talk.location && <span class="talk-where">· {talk.location}</span>}
+    {isUpcoming && <span class="badge badge-upcoming">Upcoming</span>}
+    {talk.format !== 'session' && <span class="badge badge-format">{formatLabel[talk.format]}</span>}
+  </div>
+
+  <h3 class="talk-title">{talk.title}</h3>
+  {paragraphs.map((p) => <p class="talk-desc">{p}</p>)}
+
+  {details.length > 0 && <p class="talk-detail">{details.join(' · ')}</p>}
+
+  {talk.withSpeakers.length > 0 && (
+    <p class="talk-with">With <strong>{talk.withSpeakers.join(', ')}</strong></p>
+  )}
+
+  {(talk.slidesUrl || talk.videoUrl) && (
+    <div class="talk-links">
+      {talk.slidesUrl && <a href={talk.slidesUrl} target="_blank" rel="noopener">Slides</a>}
+      {talk.videoUrl && <a href={talk.videoUrl} target="_blank" rel="noopener">Recording</a>}
+    </div>
+  )}
+</article>

@@ -1,0 +1,113 @@
+---
+// Only the subsets this site actually renders. The bare `400.css` entrypoints pull
+// in Cyrillic, Greek and Vietnamese too - never requested by a visitor thanks to
+// unicode-range, but they triple the number of files in the deploy.
+// latin-ext is required: it carries ě, á, š, ť and the rest of the Czech set.
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-ext-400.css';
+import '@fontsource/inter/latin-500.css';
+import '@fontsource/inter/latin-ext-500.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/inter/latin-ext-600.css';
+import '@fontsource/inter/latin-700.css';
+import '@fontsource/inter/latin-ext-700.css';
+import '../styles/global.css';
+import profile from '../data/profile.json';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Omit on pages that should not be indexed. */
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site);
+const ogImage = new URL('/og.png', Astro.site);
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: profile.title,
+  worksFor: { '@type': 'Organization', name: profile.company.name, url: profile.company.url },
+  url: Astro.site?.toString(),
+  image: ogImage.toString(),
+  email: `mailto:${profile.email}`,
+  address: { '@type': 'PostalAddress', addressLocality: 'Prague', addressCountry: 'CZ' },
+  knowsLanguage: ['en', 'cs'],
+  knowsAbout: profile.speaking.topics,
+  sameAs: [profile.links.linkedin, profile.links.github, profile.links.sessionize],
+};
+
+const nav = [
+  { href: '/', label: 'Home' },
+  { href: '/speaking', label: 'Speaking' },
+];
+const here = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <meta name="theme-color" content="#0b0b10" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content={profile.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${profile.name} - ${profile.title} at ${profile.company.name}`} />
+    <meta property="og:locale" content="en_GB" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="site-nav">
+      <div class="container">
+        <a class="site-nav-name" href="/">{profile.name}</a>
+        <nav class="site-nav-links" aria-label="Primary">
+          {nav.map((item) => (
+            <a href={item.href} aria-current={here === item.href ? 'page' : undefined}>{item.label}</a>
+          ))}
+        </nav>
+      </div>
+    </div>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer>
+      <div class="container footer-inner">
+        <span>{profile.name} · {profile.location}</span>
+        <div class="footer-links">
+          <a href={profile.links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+          <a href={profile.links.github} target="_blank" rel="noopener">GitHub</a>
+          <a href={profile.links.sessionize} target="_blank" rel="noopener">Sessionize</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

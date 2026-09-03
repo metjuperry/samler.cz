@@ -1,0 +1,186 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import TalkCard from '../components/TalkCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import profile from '../data/profile.json';
+import posts from '../data/posts.json';
+import headshot from '../assets/headshot.jpg';
+
+const allTalks = (await getCollection('talks')).map((t) => t.data);
+
+// Two lists, mirroring how the Sessionize profile is organised: talks on offer
+// (kept in Matěj's curated order, most important first) and the delivery record
+// (most recent or soonest first).
+const offered = allTalks
+  .filter((t) => t.status === 'offered')
+  .sort((a, b) => a.order - b.order);
+
+const sortKey = (t: (typeof allTalks)[number]) =>
+  t.date ? t.date.getTime() : t.year ? new Date(t.year, 11, 31).getTime() : -Infinity;
+
+const delivered = allTalks
+  .filter((t) => t.status === 'delivered')
+  .sort((a, b) => sortKey(b) - sortKey(a));
+
+const projects = (await getCollection('projects')).map((p) => p.data);
+const teamProjects = projects.filter((p) => p.group === 'team').sort((a, b) => a.order - b.order);
+const externalProjects = projects.filter((p) => p.group === 'external').sort((a, b) => a.order - b.order);
+const personalProjects = projects.filter((p) => p.group === 'personal').sort((a, b) => a.order - b.order);
+
+const sortedPosts = [...posts].sort((a, b) => b.date.localeCompare(a.date));
+
+const links = [
+  { href: profile.links.linkedin, label: 'LinkedIn', accent: true },
+  { href: profile.links.github, label: 'GitHub' },
+  { href: profile.links.sessionize, label: 'Sessionize' },
+  { href: `mailto:${profile.email}`, label: 'Email' },
+];
+---
+
+<Base
+  title={`${profile.name} - Power Platform engineer & speaker`}
+  description={profile.bioShort}
+>
+  <header class="hero">
+    <div class="container">
+      <Image
+        class="hero-photo"
+        src={headshot}
+        alt={`${profile.name}, ${profile.title} at ${profile.company.name}`}
+        width={336}
+        height={336}
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="hero-text">
+        <h1>{profile.name}</h1>
+        <p class="hero-title">
+          {profile.title} · <a href={profile.company.url} class="accent" target="_blank" rel="noopener">{profile.company.name}</a>
+        </p>
+        <p class="hero-tagline">{profile.tagline}</p>
+        <p class="hero-bio">{profile.bioLong[1]}</p>
+        <nav class="hero-links" aria-label="Elsewhere">
+          {links.map((l) => (
+            <a
+              class={`pill${l.accent ? ' pill-accent' : ''}`}
+              href={l.href}
+              target={l.href.startsWith('mailto') ? undefined : '_blank'}
+              rel="noopener"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section id="speaking">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">Speaking</p>
+        <h2>Talks I can give</h2>
+        <p class="section-sub">
+          The talks I'm pitching for bigger stages right now. Organisers: bio, formats and
+          booking details are on the{' '}
+          <a href="/speaking" class="accent">speaking page</a>.
+        </p>
+      </div>
+
+      <div class="talk-list">
+        {offered.map((talk) => <TalkCard talk={talk} />)}
+      </div>
+
+      <h3 class="group-heading">Where I've spoken</h3>
+      <p class="section-sub">Across European and Czech Power Platform events.</p>
+      <div class="talk-list" style="margin-top:14px">
+        {delivered.map((talk) => <TalkCard talk={talk} />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="section-alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">Projects</p>
+        <h2>Open source</h2>
+        <p class="section-sub">
+          Each card says what my actual role is, so you can check it against the commit history.
+        </p>
+      </div>
+
+      <h3 class="group-heading">The TALXIS developer stack</h3>
+      <p class="section-sub">
+        Open-source Power Platform tooling built by my team at NETWORG. It's the toolchain
+        behind my ALM talks and labs - I contribute to it, and I teach it.
+      </p>
+      <div class="project-grid">
+        {teamProjects.map((project) => <ProjectCard project={project} />)}
+      </div>
+
+      {externalProjects.length > 0 && (
+        <>
+          <h3 class="group-heading">Contributions to other open source</h3>
+          <p class="section-sub">
+            Merged pull requests to projects I don't maintain - each card links straight
+            to the PR.
+          </p>
+          <div class="project-grid">
+            {externalProjects.map((project) => <ProjectCard project={project} />)}
+          </div>
+        </>
+      )}
+
+      {personalProjects.length > 0 && (
+        <>
+          <h3 class="group-heading">Personal projects</h3>
+          <p class="section-sub">Small tools I built and maintain myself.</p>
+          <div class="project-grid">
+            {personalProjects.map((project) => <ProjectCard project={project} />)}
+          </div>
+        </>
+      )}
+    </div>
+  </section>
+
+  <section id="writing">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-label">Writing</p>
+        <h2>Selected posts</h2>
+        <p class="section-sub">
+          Published on <a href="https://blog.networg.com" class="accent" target="_blank" rel="noopener">blog.networg.com</a>.
+        </p>
+      </div>
+      <div class="post-list">
+        {sortedPosts.map((post) => (
+          <a class="post" href={post.url} target="_blank" rel="noopener">
+            <span class="post-date">
+              {new Date(post.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
+            </span>
+            <span class="post-title">{post.title}</span>
+            {post.language === 'cs' ? <span class="badge badge-lang">Czech</span> : <span />}
+            <span class="post-arrow" aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section-alt">
+    <div class="container contact-container">
+      <p class="section-label">Contact</p>
+      <h2>Get in touch</h2>
+      <p class="contact-text">
+        Speaking invitation, a Power Platform problem you're stuck on, or just want to compare
+        notes on developer tooling - I'm happy to hear from you.
+      </p>
+      <div class="cta-row">
+        <a href={`mailto:${profile.email}`} class="cta-button">{profile.email}</a>
+        <a href="/speaking" class="cta-button cta-secondary">Speaker information</a>
+      </div>
+    </div>
+  </section>
+</Base>

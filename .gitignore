@@ -349,3 +349,14 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# ── Node / Astro ──
+node_modules/
+dist/
+.astro/
+.DS_Store
+.env
+.env.production
+
+# Claude Code local config / worktrees
+.claude/

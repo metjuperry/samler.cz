@@ -57,6 +57,11 @@ entries can't pad out the main list.
 `team` (built by the team, not primarily by me). It renders as a badge on the card, so
 anything claimed here can be checked against the repo's commit history. Keep it that way.
 
+`group` decides which section a card lands in: `team` (the TALXIS stack), `external`
+(merged PRs to projects I don't maintain — point `repo` at the PR itself, not the repo
+root, since that's the actual evidence), or `personal` (things I built and maintain
+myself). A group with no entries doesn't render its section.
+
 ## Generated assets
 
 `npm run assets` writes `public/favicon.ico`, `public/apple-touch-icon.png` and

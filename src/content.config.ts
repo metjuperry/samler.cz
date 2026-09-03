@@ -59,7 +59,7 @@ const projects = defineCollection({
     role: z.enum(['author', 'maintainer', 'contributor', 'team']),
     roleNote: z.string().optional(),
     stars: z.number().int().nonnegative().default(0),
-    group: z.enum(['team', 'personal']),
+    group: z.enum(['team', 'external', 'personal']),
     order: z.number().int().default(100),
     summary: z.string(),
   }),

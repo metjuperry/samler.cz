@@ -26,6 +26,7 @@ const delivered = allTalks
 
 const projects = (await getCollection('projects')).map((p) => p.data);
 const teamProjects = projects.filter((p) => p.group === 'team').sort((a, b) => a.order - b.order);
+const externalProjects = projects.filter((p) => p.group === 'external').sort((a, b) => a.order - b.order);
 const personalProjects = projects.filter((p) => p.group === 'personal').sort((a, b) => a.order - b.order);
 
 const sortedPosts = [...posts].sort((a, b) => b.date.localeCompare(a.date));
@@ -114,11 +115,28 @@ const links = [
         {teamProjects.map((project) => <ProjectCard project={project} />)}
       </div>
 
-      <h3 class="group-heading">Personal projects</h3>
-      <p class="section-sub">Small tools I built and maintain myself.</p>
-      <div class="project-grid">
-        {personalProjects.map((project) => <ProjectCard project={project} />)}
-      </div>
+      {externalProjects.length > 0 && (
+        <>
+          <h3 class="group-heading">Contributions to other open source</h3>
+          <p class="section-sub">
+            Merged pull requests to projects I don't maintain — each card links straight
+            to the PR.
+          </p>
+          <div class="project-grid">
+            {externalProjects.map((project) => <ProjectCard project={project} />)}
+          </div>
+        </>
+      )}
+
+      {personalProjects.length > 0 && (
+        <>
+          <h3 class="group-heading">Personal projects</h3>
+          <p class="section-sub">Small tools I built and maintain myself.</p>
+          <div class="project-grid">
+            {personalProjects.map((project) => <ProjectCard project={project} />)}
+          </div>
+        </>
+      )}
     </div>
   </section>
 

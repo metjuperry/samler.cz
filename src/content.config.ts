@@ -35,6 +35,11 @@ const talks = defineCollection({
     level: z.enum(['Introduction', 'Intermediate', 'Advanced', 'Expert']).optional(),
     track: z.string().optional(),
     featured: z.boolean().default(false),
+    /**
+     * One-sentence hook shown on the collapsed row of an offered talk; the full
+     * `summary` opens underneath it. Falls back to the summary's first sentence.
+     */
+    pitch: z.string().optional(),
     summary: z.string(),
   }).superRefine((t, ctx) => {
     if (t.status === 'delivered' && !t.event) {

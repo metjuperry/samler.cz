@@ -12,6 +12,11 @@
   },
   "routes": [
     {
+      "route": "/speaking",
+      "redirect": "/#talks",
+      "statusCode": 301
+    },
+    {
       "route": "/_astro/*",
       "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
     }

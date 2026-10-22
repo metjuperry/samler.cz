@@ -2,8 +2,7 @@
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import TalkCard from '../components/TalkCard.astro';
-import ProjectCard from '../components/ProjectCard.astro';
+import OfferedTalk from '../components/OfferedTalk.astro';
 import profile from '../data/profile.json';
 import posts from '../data/posts.json';
 import headshot from '../assets/headshot.jpg';
@@ -17,170 +16,215 @@ const offered = allTalks
   .filter((t) => t.status === 'offered')
   .sort((a, b) => a.order - b.order);
 
+// Within a year, dated talks come before ones where only the year is known: a
+// year-only talk sorts as if it happened on 1 January.
 const sortKey = (t: (typeof allTalks)[number]) =>
-  t.date ? t.date.getTime() : t.year ? new Date(t.year, 11, 31).getTime() : -Infinity;
+  t.date ? t.date.getTime() : t.year ? new Date(t.year, 0, 1).getTime() : -Infinity;
 
 const delivered = allTalks
   .filter((t) => t.status === 'delivered')
   .sort((a, b) => sortKey(b) - sortKey(a));
+const ledger = delivered.filter((t) => t.date || t.year);
+// Undated talks go in a compact one-liner so they can't pad out the ledger.
+const undated = delivered.filter((t) => !t.date && !t.year);
+
+const when = (t: (typeof allTalks)[number]) =>
+  t.date
+    ? t.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+    : String(t.year);
+// Recomputed on every build, so a talk stops saying "Upcoming" the next time the
+// site is deployed after the date passes.
+const isUpcoming = (t: (typeof allTalks)[number]) => !!t.date && t.date.getTime() > Date.now();
+const kindLabel: Record<string, string> = { workshop: 'Workshop', lab: 'Lab', panel: 'Panel' };
 
 const projects = (await getCollection('projects')).map((p) => p.data);
-const teamProjects = projects.filter((p) => p.group === 'team').sort((a, b) => a.order - b.order);
-const externalProjects = projects.filter((p) => p.group === 'external').sort((a, b) => a.order - b.order);
-const personalProjects = projects.filter((p) => p.group === 'personal').sort((a, b) => a.order - b.order);
+const byOrder = (a: { order: number }, b: { order: number }) => a.order - b.order;
+const teamProjects = projects.filter((p) => p.group === 'team').sort(byOrder);
+const externalProjects = projects.filter((p) => p.group === 'external').sort(byOrder);
+const personalProjects = projects.filter((p) => p.group === 'personal').sort(byOrder);
+const roleLabel: Record<string, string> = {
+  author: 'Author', maintainer: 'Maintainer', contributor: 'Contributor', team: 'Team project',
+};
+const repoMeta = (p: (typeof projects)[number]) =>
+  [roleLabel[p.role], p.language, p.stars > 0 ? `★ ${p.stars}` : null].filter(Boolean).join(' · ');
 
 const sortedPosts = [...posts].sort((a, b) => b.date.localeCompare(a.date));
 
-const links = [
-  { href: profile.links.linkedin, label: 'LinkedIn', accent: true },
-  { href: profile.links.github, label: 'GitHub' },
-  { href: profile.links.sessionize, label: 'Sessionize' },
-  { href: `mailto:${profile.email}`, label: 'Email' },
-];
+// Split the tagline around the highlighted phrase so the accent lives in data,
+// not markup.
+const [taglineBefore, taglineAfter] = profile.tagline.includes(profile.taglineHighlight)
+  ? profile.tagline.split(profile.taglineHighlight)
+  : [profile.tagline, ''];
+const highlight = profile.tagline.includes(profile.taglineHighlight) ? profile.taglineHighlight : '';
+
+const sections = { talks: '01', history: '02', code: '03', writing: '04' };
 ---
 
 <Base
   title={`${profile.name} - Power Platform engineer & speaker`}
   description={profile.bioShort}
 >
-  <header class="hero">
-    <div class="container">
+  <div class="container">
+    <section class="hero" aria-labelledby="hero-name">
+      <div class="hero-text">
+        <p class="hero-role mono">
+          {profile.title} at <a href={profile.company.url} target="_blank" rel="noopener">{profile.company.name}</a> · {profile.location.split(',')[0]}
+        </p>
+        <h1 id="hero-name">{profile.name}</h1>
+        <p class="hero-tagline">{taglineBefore}{highlight && <em>{highlight}</em>}{taglineAfter}</p>
+        <p class="hero-bio">{profile.bioLong[1]}</p>
+        <div class="hero-actions">
+          <a class="btn btn-accent" href="#contact">
+            Invite me to speak
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+          <a class="hero-email" href={`mailto:${profile.email}`}>{profile.email}</a>
+          <span class="hero-links mono">
+            <a href={profile.links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+            <a href={profile.links.github} target="_blank" rel="noopener">GitHub</a>
+            <a href={profile.links.sessionize} target="_blank" rel="noopener">Sessionize</a>
+          </span>
+        </div>
+      </div>
       <Image
         class="hero-photo"
         src={headshot}
         alt={`${profile.name}, ${profile.title} at ${profile.company.name}`}
-        width={336}
-        height={336}
+        width={340}
+        height={340}
+        densities={[1, 2]}
         loading="eager"
         fetchpriority="high"
       />
-      <div class="hero-text">
-        <h1>{profile.name}</h1>
-        <p class="hero-title">
-          {profile.title} · <a href={profile.company.url} class="accent" target="_blank" rel="noopener">{profile.company.name}</a>
+    </section>
+
+    <ul class="spoken-at" aria-label="Events I've spoken at">
+      <li class="spoken-at-label" aria-hidden="true">Spoken at</li>
+      {profile.speaking.spokenAt.map((e) => <li>{e}</li>)}
+    </ul>
+
+    <section id="talks" class="section">
+      <div class="section-head">
+        <h2><span class="section-no">{sections.talks}</span>Talks I'm offering</h2>
+        <a class="section-head-aside" href="#contact">Get in touch ↓</a>
+      </div>
+      <p class="section-intro">
+        For organisers: the sessions I'm pitching for bigger stages right now, in recommended
+        order. Each runs in {profile.languages.join(' or ')} and can be tailored in length and
+        depth. Open one for the full abstract.
+      </p>
+      {offered.map((talk, i) => <OfferedTalk talk={talk} index={i} />)}
+    </section>
+
+    <section id="history" class="section">
+      <div class="section-head">
+        <h2><span class="section-no">{sections.history}</span>Where I've spoken</h2>
+        <span class="section-head-aside">European &amp; Czech Power Platform events</span>
+      </div>
+      <ul class="ledger">
+        {ledger.map((t) => (
+          <li class="ledger-row">
+            <span class="ledger-date">{when(t)}</span>
+            {t.eventUrl
+              ? <a class="ledger-event" href={t.eventUrl} target="_blank" rel="noopener">{t.event}</a>
+              : <span class="ledger-event">{t.event}</span>}
+            <span class="ledger-talk">
+              {t.title}
+              {t.withSpeakers.length > 0 && <span class="ledger-with">with {t.withSpeakers.join(', ')}</span>}
+              {(t.slidesUrl || t.videoUrl) && (
+                <span class="ledger-links">
+                  {t.slidesUrl && <a href={t.slidesUrl} target="_blank" rel="noopener">Slides</a>}
+                  {t.videoUrl && <a href={t.videoUrl} target="_blank" rel="noopener">Recording</a>}
+                </span>
+              )}
+            </span>
+            <span class="ledger-place">
+              {t.location}
+              {kindLabel[t.format] && <span class="badge">{kindLabel[t.format]}</span>}
+              {isUpcoming(t) && <span class="badge badge-accent">Upcoming</span>}
+            </span>
+          </li>
+        ))}
+      </ul>
+      {undated.length > 0 && (
+        <p class="also">
+          <span class="also-label">+ community &amp; user-group talks</span>
+          {undated.map((t) => t.title).join(' · ')}
         </p>
-        <p class="hero-tagline">{profile.tagline}</p>
-        <p class="hero-bio">{profile.bioLong[1]}</p>
-        <nav class="hero-links" aria-label="Elsewhere">
-          {links.map((l) => (
-            <a
-              class={`pill${l.accent ? ' pill-accent' : ''}`}
-              href={l.href}
-              target={l.href.startsWith('mailto') ? undefined : '_blank'}
-              rel="noopener"
-            >
-              {l.label}
+      )}
+    </section>
+
+    <section id="code" class="section">
+      <div class="section-head">
+        <h2><span class="section-no">{sections.code}</span>Open source</h2>
+      </div>
+      <div class="code-cols">
+        <div class="code-col code-col-main">
+          <h3>The TALXIS developer stack</h3>
+          <p class="code-col-intro">Built by my team at NETWORG - the toolchain behind my ALM talks and labs.</p>
+          {teamProjects.map((p) => (
+            <a class="repo" href={p.repo} target="_blank" rel="noopener">
+              <span class="repo-name">{p.name}</span>
+              <span class="repo-desc">{p.summary}</span>
+              <span class="repo-meta">{repoMeta(p)}</span>
             </a>
           ))}
-        </nav>
-      </div>
-    </div>
-  </header>
 
-  <section id="speaking">
-    <div class="container">
-      <div class="section-head">
-        <p class="section-label">Speaking</p>
-        <h2>Talks I can give</h2>
-        <p class="section-sub">
-          The talks I'm pitching for bigger stages right now. Organisers: bio, formats and
-          booking details are on the{' '}
-          <a href="/speaking" class="accent">speaking page</a>.
-        </p>
-      </div>
+          {personalProjects.length > 0 && (
+            <>
+              <h3 style="margin-top:40px">Personal projects</h3>
+              <p class="code-col-intro">Small tools I built and maintain myself.</p>
+              {personalProjects.map((p) => (
+                <a class="repo" href={p.repo} target="_blank" rel="noopener">
+                  <span class="repo-name">{p.name}</span>
+                  <span class="repo-desc">{p.summary}</span>
+                  <span class="repo-meta">{repoMeta(p)}</span>
+                </a>
+              ))}
+            </>
+          )}
+        </div>
 
-      <div class="talk-list">
-        {offered.map((talk) => <TalkCard talk={talk} />)}
-      </div>
-
-      <h3 class="group-heading">Where I've spoken</h3>
-      <p class="section-sub">Across European and Czech Power Platform events.</p>
-      <div class="talk-list" style="margin-top:14px">
-        {delivered.map((talk) => <TalkCard talk={talk} />)}
-      </div>
-    </div>
-  </section>
-
-  <section id="projects" class="section-alt">
-    <div class="container">
-      <div class="section-head">
-        <p class="section-label">Projects</p>
-        <h2>Open source</h2>
-        <p class="section-sub">
-          Each card says what my actual role is, so you can check it against the commit history.
-        </p>
-      </div>
-
-      <h3 class="group-heading">The TALXIS developer stack</h3>
-      <p class="section-sub">
-        Open-source Power Platform tooling built by my team at NETWORG. It's the toolchain
-        behind my ALM talks and labs - I contribute to it, and I teach it.
-      </p>
-      <div class="project-grid">
-        {teamProjects.map((project) => <ProjectCard project={project} />)}
-      </div>
-
-      {externalProjects.length > 0 && (
-        <>
-          <h3 class="group-heading">Contributions to other open source</h3>
-          <p class="section-sub">
-            Merged pull requests to projects I don't maintain - each card links straight
-            to the PR.
-          </p>
-          <div class="project-grid">
-            {externalProjects.map((project) => <ProjectCard project={project} />)}
+        {externalProjects.length > 0 && (
+          <div class="code-col code-col-side">
+            <h3>Contributions to first-party repositories</h3>
+            <p class="code-col-intro">Merged pull requests to Microsoft's official projects.</p>
+            {externalProjects.map((p) => (
+              <a class="pr" href={p.repo} target="_blank" rel="noopener">
+                <span class="pr-repo">{p.org}/{p.name}</span>
+                {p.roleNote && <span class="pr-what">{p.roleNote}</span>}
+                <span class="pr-meta">{[p.language, p.stars > 0 ? `★ ${p.stars}` : null].filter(Boolean).join(' · ')}</span>
+              </a>
+            ))}
           </div>
-        </>
-      )}
+        )}
+      </div>
+    </section>
 
-      {personalProjects.length > 0 && (
-        <>
-          <h3 class="group-heading">Personal projects</h3>
-          <p class="section-sub">Small tools I built and maintain myself.</p>
-          <div class="project-grid">
-            {personalProjects.map((project) => <ProjectCard project={project} />)}
-          </div>
-        </>
-      )}
-    </div>
-  </section>
-
-  <section id="writing">
-    <div class="container">
+    <section id="writing" class="section section-last">
       <div class="section-head">
-        <p class="section-label">Writing</p>
-        <h2>Selected posts</h2>
-        <p class="section-sub">
-          Published on <a href="https://blog.networg.com" class="accent" target="_blank" rel="noopener">blog.networg.com</a>.
-        </p>
+        <h2><span class="section-no">{sections.writing}</span>Writing</h2>
+        <a class="section-head-aside" href="https://blog.networg.com" target="_blank" rel="noopener">blog.networg.com →</a>
       </div>
-      <div class="post-list">
-        {sortedPosts.map((post) => (
-          <a class="post" href={post.url} target="_blank" rel="noopener">
-            <span class="post-date">
-              {new Date(post.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
-            </span>
-            <span class="post-title">{post.title}</span>
-            {post.language === 'cs' ? <span class="badge badge-lang">Czech</span> : <span />}
-            <span class="post-arrow" aria-hidden="true">→</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
+      {sortedPosts.map((post) => (
+        <a class="post" href={post.url} target="_blank" rel="noopener">
+          <span class="post-date">
+            {new Date(post.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
+          </span>
+          <span class="post-title">{post.title}</span>
+          {post.language === 'cs' && <span class="badge">Czech</span>}
+        </a>
+      ))}
+    </section>
+  </div>
 
-  <section id="contact" class="section-alt">
-    <div class="container contact-container">
-      <p class="section-label">Contact</p>
-      <h2>Get in touch</h2>
-      <p class="contact-text">
-        Speaking invitation, a Power Platform problem you're stuck on, or just want to compare
-        notes on developer tooling - I'm happy to hear from you.
-      </p>
-      <div class="cta-row">
-        <a href={`mailto:${profile.email}`} class="cta-button">{profile.email}</a>
-        <a href="/speaking" class="cta-button cta-secondary">Speaker information</a>
-      </div>
+  <section id="contact" class="contact" aria-labelledby="contact-heading">
+    <div class="container">
+      <h2 id="contact-heading" class="contact-text">
+        A speaking invitation, a Power Platform problem you're stuck on, or notes to compare on
+        developer tooling - write to me.
+      </h2>
+      <a class="contact-email" href={`mailto:${profile.email}`}>{profile.email}</a>
     </div>
   </section>
 </Base>

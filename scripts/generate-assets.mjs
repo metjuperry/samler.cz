@@ -18,16 +18,19 @@ const p = (...s) => path.join(root, ...s);
 
 const profile = JSON.parse(await readFile(p('src/data/profile.json'), 'utf8'));
 
-const font = (file) => readFile(p('node_modules/@fontsource/inter/files', file));
-// Both subsets are needed: `latin` has no glyph for the ě in "Matěj". Satori won't
-// fall back between fonts that share a name, so the extended subset is registered
-// under its own family and listed as a fallback in `fontFamily`.
-const fonts = await Promise.all(
-  [400, 600, 700].flatMap((weight) => [
-    font(`inter-latin-${weight}-normal.woff`).then((data) => ({ name: 'Inter', weight, style: 'normal', data })),
-    font(`inter-latin-ext-${weight}-normal.woff`).then((data) => ({ name: 'InterExt', weight, style: 'normal', data })),
-  ]),
-);
+// Both subsets of each family are needed: `latin` has no glyph for the ě in "Matěj".
+// Satori won't fall back between fonts that share a name, so each extended subset is
+// registered under its own family and listed as a fallback in `fontFamily`.
+const font = (pkg, file) => readFile(p('node_modules/@fontsource', pkg, 'files', file));
+const family = (pkg, name, weights) =>
+  weights.flatMap((weight) => [
+    font(pkg, `${pkg}-latin-${weight}-normal.woff`).then((data) => ({ name, weight, style: 'normal', data })),
+    font(pkg, `${pkg}-latin-ext-${weight}-normal.woff`).then((data) => ({ name: `${name}Ext`, weight, style: 'normal', data })),
+  ]);
+const fonts = await Promise.all([
+  ...family('archivo', 'Archivo', [500, 800]),
+  ...family('ibm-plex-mono', 'Plex Mono', [400]),
+]);
 
 // ── favicons ──────────────────────────────────────────────────────────────────
 const faviconSvg = await readFile(p('public/favicon.svg'));
@@ -51,37 +54,55 @@ header.writeUInt32LE(22, 18);        // offset of image data
 await writeFile(p('public/favicon.ico'), Buffer.concat([header, icoPng]));
 
 // ── open graph image ──────────────────────────────────────────────────────────
-const photo = await sharp(p('src/assets/headshot.jpg')).resize(420, 420, { fit: 'cover' }).jpeg({ quality: 90 }).toBuffer();
+// Mirrors the site: light ground, black rules, one accent, square photo.
+const photo = await sharp(p('src/assets/headshot.jpg')).resize(400, 470, { fit: 'cover', position: 'top' }).jpeg({ quality: 90 }).toBuffer();
 const photoUri = `data:image/jpeg;base64,${photo.toString('base64')}`;
 
 const el = (type, props, ...children) => ({ type, props: { ...props, children: children.flat() } });
 const text = (s) => s;
 
+const ink = '#121212';
+const ground = '#f3f3f1';
+const accent = '#c93a1c';
+const muted = '#55564f';
+
+// Highlight the same phrase the homepage highlights.
+const [before, after] = profile.tagline.includes(profile.taglineHighlight)
+  ? profile.tagline.split(profile.taglineHighlight)
+  : [profile.tagline, null];
+const words = (str, hl) => str.split(/\s+/).filter(Boolean).map((word) => ({ word, hl }));
+const taglineWords = after === null
+  ? words(before, false)
+  : [...words(before, false), ...words(profile.taglineHighlight, true), ...words(after, false)];
+
 const svg = await satori(
   el('div', {
     style: {
-      width: 1200, height: 630, display: 'flex', alignItems: 'center',
-      background: '#0b0b10', fontFamily: 'Inter, InterExt', padding: '0 76px', gap: 64,
-      borderBottom: '10px solid #6b8ff5',
+      width: 1200, height: 630, display: 'flex', flexDirection: 'column',
+      background: ground, color: ink, padding: '64px 80px',
+      fontFamily: 'Archivo, ArchivoExt',
     },
   },
-    el('div', { style: { display: 'flex', flexDirection: 'column', flex: 1 } },
-      el('div', { style: { display: 'flex', fontSize: 68, fontWeight: 700, color: '#ffffff', letterSpacing: -1.5 } }, text(profile.name)),
-      el('div', { style: { display: 'flex', fontSize: 29, color: '#8990a6', marginTop: 10 } },
-        text(`${profile.title} · ${profile.company.name}`)),
-      el('div', {
-        style: {
-          display: 'flex', fontSize: 33, color: '#dde1eb', marginTop: 30,
-          lineHeight: 1.35, maxWidth: 640,
-        },
-      }, text(profile.tagline)),
-      el('div', { style: { display: 'flex', fontSize: 24, color: '#6b8ff5', marginTop: 34, fontWeight: 600 } },
-        text('samler.cz')),
+    el('div', {
+      style: {
+        display: 'flex', justifyContent: 'space-between', paddingBottom: 20,
+        borderBottom: `2px solid ${ink}`, fontFamily: 'Plex Mono, Plex MonoExt', fontSize: 22, color: muted,
+      },
+    },
+      el('div', { style: { display: 'flex' } }, text(`${profile.title} · ${profile.company.name}`)),
+      el('div', { style: { display: 'flex', color: accent } }, text('samler.cz')),
     ),
-    el('img', {
-      src: photoUri, width: 340, height: 340,
-      style: { borderRadius: 999, border: '4px solid rgba(255,255,255,0.14)', objectFit: 'cover' },
-    }),
+    el('div', { style: { display: 'flex', flex: 1, gap: 56, alignItems: 'flex-end', marginTop: 40 } },
+      el('div', { style: { display: 'flex', flexDirection: 'column', flex: 1 } },
+        el('div', { style: { display: 'flex', fontSize: 104, fontWeight: 800, letterSpacing: -4, lineHeight: 0.95 } }, text(profile.name)),
+        el('div', { style: { display: 'flex', flexWrap: 'wrap', fontSize: 36, fontWeight: 500, marginTop: 30, lineHeight: 1.2, maxWidth: 640 } },
+          // Satori wraps flex children, not text runs, so each word is its own child.
+          ...taglineWords.map(({ word, hl }) =>
+            el('span', { style: { marginRight: 9, color: hl ? accent : ink } }, text(word))),
+        ),
+      ),
+      el('img', { src: photoUri, width: 340, height: 400, style: { objectFit: 'cover' } }),
+    ),
   ),
   { width: 1200, height: 630, fonts },
 );

@@ -1,7 +1,8 @@
 # samler.cz
 
-Personal site - talks, projects and writing. Astro, static output, deployed to Azure
-Static Web Apps on push to `master`.
+Personal site - talks, projects and writing, all on one page. Astro, static output,
+deployed to Azure Static Web Apps on push to `master`. The old `/speaking` page is gone;
+`staticwebapp.config.json` redirects it to `/#talks` so existing links keep working.
 
 ```bash
 npm install
@@ -17,7 +18,7 @@ Nothing is hardcoded in markup. To change what the site says, edit data:
 
 | What | Where |
 |---|---|
-| Name, title, bios, links, speaking topics and formats | `src/data/profile.json` |
+| Name, title, tagline (and its highlighted phrase), links, "spoken at" strip, talk defaults | `src/data/profile.json` |
 | Blog posts | `src/data/posts.json` |
 | Talks - one file each | `src/content/talks/*.md` |
 | Projects - one file each | `src/content/projects/*.md` |
@@ -33,6 +34,7 @@ Drop a new `.md` in `src/content/talks/`:
 ```yaml
 ---
 title: Your talk title            # quote it if it contains a colon
+status: delivered                 # delivered (an outing) | offered (on the menu)
 event: Some Conference 2027
 eventUrl: https://…               # optional, must be a valid URL
 location: Prague, Czechia         # optional
@@ -42,14 +44,20 @@ language: en                      # en | cs
 withSpeakers: ["Co Presenter"]    # optional
 slidesUrl: https://…              # optional
 videoUrl: https://…               # optional
+pitch: One sentence.               # offered talks: shown on the collapsed row
 summary: >-
   One paragraph. Required.
 ---
 ```
 
-Talks with a `date` sort first, then those with only a `year`. A talk with **neither**
-renders in the compact "also presented" list instead of as a full card, so undated
-entries can't pad out the main list.
+Offered talks render as expandable rows: the `pitch` (or the summary's first sentence)
+is always visible, the full `summary` opens on click, with format, length, level and an
+"Ask for this talk" email link. Length and level fall back to `speaking.sessionDefaults`
+in `profile.json` when the talk doesn't set `durationMinutes` / `level`.
+
+Delivered talks are newest first; within a year, dated talks come before ones with only
+a `year`. A talk with **neither** renders in the compact "community & user-group talks"
+line instead of the ledger, so undated entries can't pad out the main list.
 
 ### Adding a project
 
@@ -58,8 +66,8 @@ entries can't pad out the main list.
 anything claimed here can be checked against the repo's commit history. Keep it that way.
 
 `group` decides which section a card lands in: `team` (the TALXIS stack), `external`
-(merged PRs to projects I don't maintain - point `repo` at the PR itself, not the repo
-root, since that's the actual evidence), or `personal` (things I built and maintain
+("Contributions to first-party repositories" - merged PRs to Microsoft's projects; point
+`repo` at the PR itself, not the repo root, since that's the actual evidence), or `personal` (things I built and maintain
 myself). A group with no entries doesn't render its section.
 
 ## Generated assets
@@ -75,7 +83,7 @@ regenerating.
 
 `src/assets/headshot.jpg` is a 1000×1000 square cut from the full-frame studio portrait
 (`R5JM0459.jpg`, 4669×7000) with `extract({left: 217, top: 340, width: 4102, height: 4102})`
-- head-and-shoulders with enough headroom to survive the circular mask. Recrop from the
+- head-and-shoulders with enough headroom for the 4:5 crop the homepage and OG image use. Recrop from the
 original if you need a different framing; the master isn't committed.
 
 ## Before deploying

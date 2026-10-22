@@ -5,6 +5,10 @@ org: microsoft
 language: Go
 role: contributor
 roleNote: "Merged PR #1190 (Aug 2026): a resource for group-based environment policies."
+pr:
+  number: 1190
+  merged: Aug 2026
+  change: "Added a resource for group-based environment policies."
 stars: 58
 group: external
 order: 1

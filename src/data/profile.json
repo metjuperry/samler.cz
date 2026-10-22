@@ -5,7 +5,8 @@
   "location": "Prague, Czechia",
   "email": "matej@samler.cz",
   "languages": ["English", "Czech"],
-  "tagline": "I build on Power Platform from a developer's seat, not the maker's.",
+  "tagline": "I build on Power Platform from a developer's seat - and I teach teams to do the same.",
+  "taglineHighlight": "developer's seat",
   "bioShort": "Staff Software Engineer at NETWORG. I work on Power Platform extensibility - plugins, PCFs, and the ALM tooling around them - and I'm currently going deep on agentic engineering for the platform.",
   "bioLong": [
     "I'm a Staff Software Engineer at NETWORG with hands-on experience across the whole Power Platform - plugins, Power Automate, PCFs, Power Apps. Whatever corner of the platform a problem lives in, I've usually been there.",
@@ -32,6 +33,8 @@
       { "name": "Conference session", "detail": "45–60 minutes, level 200–400" },
       { "name": "Hands-on lab", "detail": "Half or full day, attendees build alongside" },
       { "name": "Workshop", "detail": "Multi-instructor, deep dive on developer ALM" }
-    ]
+    ],
+    "sessionDefaults": { "length": "45–60 min, can be tailored", "level": "200–400" },
+    "spokenAt": ["Nordic Summit", "European Power Platform Conference", "Update Days", "WUG Brno"]
   }
 }

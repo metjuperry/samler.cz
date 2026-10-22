@@ -5,6 +5,7 @@ order: 2
 format: session
 topics: ["Testing", "Playwright", "Code Apps", "AI"]
 featured: true
+pitch: "Generating runnable UI tests straight against a Code App, then wiring them into a pipeline so every Copilot-authored change has to prove it didn't break what already worked."
 summary: >-
   Code Apps - Power Platform's code-first canvas surface - get built and rebuilt
   fast, often by an AI agent that has no idea it just changed behaviour it can't

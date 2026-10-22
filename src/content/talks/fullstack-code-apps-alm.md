@@ -5,6 +5,7 @@ order: 3
 format: session
 topics: ["ALM", "Code Apps", "React", "Monorepo", "CI/CD"]
 featured: true
+pitch: "Live-coding a complete solution - React Code App, C# plugins, custom connectors, Power Automate and Package Deployer - plus the inner and outer loop that ships it as one unit."
 summary: >-
   An update to the ALM talk I've given at EPPC and Update Days, built around Code
   Apps: live coding a complete full stack Power Platform solution from scratch. A

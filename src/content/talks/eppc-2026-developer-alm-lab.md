@@ -2,8 +2,8 @@
 title: Developer ALM Lab – Source Control, Build System and CI/CD
 event: European Power Platform Conference
 eventUrl: https://espc.tech/conference/eppc-2026/programme/developer-alm-lab-source-control-build-system-and-ci-cd/
-location: Vienna, Austria
-year: 2025
+location: Copenhagen, Denmark
+year: 2026
 format: lab
 withSpeakers: ["Tomáš Prokop"]
 topics: ["ALM", "Dataverse Solution Framework", "Azure DevOps", "GitHub"]

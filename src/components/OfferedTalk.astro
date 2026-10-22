@@ -1,0 +1,60 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import profile from '../data/profile.json';
+
+interface Props {
+  talk: CollectionEntry<'talks'>['data'];
+  index: number;
+}
+const { talk, index } = Astro.props;
+
+// See the note in content.config.ts: a blank line in the YAML folded scalar
+// survives as a single `\n`, which is the paragraph break.
+const paragraphs = talk.summary.split(/\n+/);
+const pitch = talk.pitch ?? paragraphs[0].split(/(?<=\.)\s/)[0];
+
+const formatLabel: Record<string, string> = {
+  session: 'Conference session', workshop: 'Workshop', lab: 'Hands-on lab', panel: 'Panel',
+};
+const facts = [
+  { term: 'Format', value: formatLabel[talk.format] },
+  { term: 'Length', value: talk.durationMinutes ? `${talk.durationMinutes} min` : profile.speaking.sessionDefaults.length },
+  { term: 'Level', value: talk.level ?? profile.speaking.sessionDefaults.level },
+  { term: 'Language', value: profile.languages.join(' or ') },
+];
+
+const mailto = `mailto:${profile.email}?subject=${encodeURIComponent(`Talk request: ${talk.title}`)}`;
+---
+<details class="offer">
+  <summary>
+    <span class="offer-no mono">T{index + 1}</span>
+    <span class="offer-main">
+      <h3 class="offer-title">{talk.title}</h3>
+      <span class="offer-pitch">{pitch}</span>
+    </span>
+    <span class="offer-side">
+      {talk.topics.length > 0 && <span class="offer-tags">{talk.topics.join(' · ')}</span>}
+      <span class="offer-toggle">
+        <span class="toggle-open">Read the abstract</span>
+        <span class="toggle-close">Hide abstract</span>
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" /></svg>
+      </span>
+    </span>
+  </summary>
+  <div class="offer-body">
+    <div class="offer-abstract">
+      {paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+    <div class="offer-facts">
+      <dl>
+        {facts.map((f) => (
+          <>
+            <dt>{f.term}</dt>
+            <dd>{f.value}</dd>
+          </>
+        ))}
+      </dl>
+      <a class="btn" href={mailto}>Ask for this talk</a>
+    </div>
+  </div>
+</details>

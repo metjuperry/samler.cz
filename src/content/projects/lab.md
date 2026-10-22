@@ -1,6 +1,6 @@
 ---
-name: alm-lab
-repo: https://github.com/TALXIS/alm-lab
+name: lab
+repo: https://github.com/TALXIS/lab
 org: TALXIS
 language: PowerShell
 role: contributor

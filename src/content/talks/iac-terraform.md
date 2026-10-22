@@ -5,6 +5,7 @@ order: 1
 format: session
 topics: ["Infrastructure as Code", "Terraform", "ALM", "Governance"]
 featured: true
+pitch: "Environments, connections and DLP policies defined in code, reviewed in a pull request and reproducible on demand - built from nothing with Microsoft's official provider, gaps included."
 summary: >-
   Power Platform environments are usually clicked into existence - admin center,
   PPAC, maker portal - which means the moment you need the same setup twice, in a

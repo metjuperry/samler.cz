@@ -1,16 +1,24 @@
 ---
 // Only the subsets this site actually renders. The bare `400.css` entrypoints pull
 // in Cyrillic, Greek and Vietnamese too - never requested by a visitor thanks to
-// unicode-range, but they triple the number of files in the deploy.
+// unicode-range, but they multiply the number of files in the deploy.
 // latin-ext is required: it carries ě, á, š, ť and the rest of the Czech set.
-import '@fontsource/inter/latin-400.css';
-import '@fontsource/inter/latin-ext-400.css';
-import '@fontsource/inter/latin-500.css';
-import '@fontsource/inter/latin-ext-500.css';
-import '@fontsource/inter/latin-600.css';
-import '@fontsource/inter/latin-ext-600.css';
-import '@fontsource/inter/latin-700.css';
-import '@fontsource/inter/latin-ext-700.css';
+import '@fontsource/archivo/latin-500.css';
+import '@fontsource/archivo/latin-ext-500.css';
+import '@fontsource/archivo/latin-700.css';
+import '@fontsource/archivo/latin-ext-700.css';
+import '@fontsource/archivo/latin-800.css';
+import '@fontsource/archivo/latin-ext-800.css';
+import '@fontsource/ibm-plex-sans/latin-400.css';
+import '@fontsource/ibm-plex-sans/latin-ext-400.css';
+import '@fontsource/ibm-plex-sans/latin-500.css';
+import '@fontsource/ibm-plex-sans/latin-ext-500.css';
+import '@fontsource/ibm-plex-sans/latin-600.css';
+import '@fontsource/ibm-plex-sans/latin-ext-600.css';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import '@fontsource/ibm-plex-mono/latin-ext-400.css';
+import '@fontsource/ibm-plex-mono/latin-500.css';
+import '@fontsource/ibm-plex-mono/latin-ext-500.css';
 import '../styles/global.css';
 import profile from '../data/profile.json';
 
@@ -40,11 +48,14 @@ const personSchema = {
   sameAs: [profile.links.linkedin, profile.links.github, profile.links.sessionize],
 };
 
+// Everything lives on one page, so the nav is a set of jumps into it. Absolute
+// `/#…` hrefs keep them working from the 404 page too.
 const nav = [
-  { href: '/', label: 'Home' },
-  { href: '/speaking', label: 'Speaking' },
+  { href: '/#talks', label: 'Talks' },
+  { href: '/#history', label: 'Speaking history', secondary: true },
+  { href: '/#code', label: 'Open source', secondary: true },
+  { href: '/#writing', label: 'Writing', secondary: true },
 ];
-const here = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <!doctype html>
@@ -57,7 +68,7 @@ const here = Astro.url.pathname.replace(/\/$/, '') || '/';
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, follow" />}
 
-    <meta name="theme-color" content="#0b0b10" />
+    <meta name="theme-color" content="#f3f3f1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -84,28 +95,33 @@ const here = Astro.url.pathname.replace(/\/$/, '') || '/';
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <div class="site-nav">
+    <header class="site-nav">
       <div class="container">
-        <a class="site-nav-name" href="/">{profile.name}</a>
-        <nav class="site-nav-links" aria-label="Primary">
-          {nav.map((item) => (
-            <a href={item.href} aria-current={here === item.href ? 'page' : undefined}>{item.label}</a>
-          ))}
-        </nav>
+        <div class="site-nav-inner">
+          <a class="site-nav-name" href="/">{profile.name}</a>
+          <nav class="site-nav-links" aria-label="Primary">
+            {nav.map((item) => (
+              <a href={item.href} class={item.secondary ? 'nav-secondary' : undefined}>{item.label}</a>
+            ))}
+            <a class="btn" href="/#contact">Book a talk</a>
+          </nav>
+        </div>
       </div>
-    </div>
+    </header>
 
     <main id="main">
       <slot />
     </main>
 
     <footer>
-      <div class="container footer-inner">
-        <span>{profile.name} · {profile.location}</span>
-        <div class="footer-links">
-          <a href={profile.links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
-          <a href={profile.links.github} target="_blank" rel="noopener">GitHub</a>
-          <a href={profile.links.sessionize} target="_blank" rel="noopener">Sessionize</a>
+      <div class="container">
+        <div class="footer-inner">
+          <span>{profile.name} · {profile.location}</span>
+          <div class="footer-links">
+            <a href={profile.links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+            <a href={profile.links.github} target="_blank" rel="noopener">GitHub</a>
+            <a href={profile.links.sessionize} target="_blank" rel="noopener">Sessionize</a>
+          </div>
         </div>
       </div>
     </footer>

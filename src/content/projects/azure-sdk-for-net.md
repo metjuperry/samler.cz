@@ -5,6 +5,10 @@ org: Azure
 language: "C#"
 role: contributor
 roleNote: "Merged PR #35954 (Sep 2023): fixed DataMemberAttribute serialization in QueryAsync."
+pr:
+  number: 35954
+  merged: Sep 2023
+  change: "Fixed DataMemberAttribute serialization in QueryAsync."
 stars: 6046
 group: external
 order: 2

@@ -98,10 +98,12 @@ const sections = { talks: '01', history: '02', code: '03', writing: '04' };
       />
     </section>
 
-    <ul class="spoken-at" aria-label="Events I've spoken at">
-      <li class="spoken-at-label" aria-hidden="true">Spoken at</li>
-      {profile.speaking.spokenAt.map((e) => <li>{e}</li>)}
-    </ul>
+    <div class="credentials">
+      <ul class="cred-row" aria-label="Events I've spoken at">
+        <li class="cred-label" aria-hidden="true">Spoken at</li>
+        {profile.speaking.spokenAt.map((e) => <li>{e}</li>)}
+      </ul>
+    </div>
 
     <section id="talks" class="section">
       <div class="section-head">
@@ -158,6 +160,34 @@ const sections = { talks: '01', history: '02', code: '03', writing: '04' };
       <div class="section-head">
         <h2><span class="section-no">{sections.code}</span>Open source</h2>
       </div>
+      {externalProjects.length > 0 && (
+        <div id="first-party" class="first-party">
+          <div class="first-party-head">
+            <h3>Contributions to first-party repositories</h3>
+            <p class="code-col-intro">Merged pull requests to Microsoft's official projects.</p>
+          </div>
+          <div class="first-party-grid">
+            {externalProjects.map((p) => (
+              <a class="fp-card" href={p.repo} target="_blank" rel="noopener">
+                <span class="fp-org">{p.org}/</span>
+                <span class="fp-name">{p.name}</span>
+                {p.pr && (
+                  <>
+                    <span class="fp-pr">PR #{p.pr.number} · merged {p.pr.merged}</span>
+                    <span class="fp-change">{p.pr.change}</span>
+                  </>
+                )}
+                <span class="fp-about">{p.summary}</span>
+                <span class="fp-foot">
+                  <span>{p.language}{p.stars > 0 && ` · ★ ${p.stars.toLocaleString('en-GB')}`}</span>
+                  <span class="fp-cta">View the PR →</span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div class="code-cols">
         <div class="code-col code-col-main">
           <h3>The TALXIS developer stack</h3>
@@ -184,20 +214,6 @@ const sections = { talks: '01', history: '02', code: '03', writing: '04' };
             </>
           )}
         </div>
-
-        {externalProjects.length > 0 && (
-          <div class="code-col code-col-side">
-            <h3>Contributions to first-party repositories</h3>
-            <p class="code-col-intro">Merged pull requests to Microsoft's official projects.</p>
-            {externalProjects.map((p) => (
-              <a class="pr" href={p.repo} target="_blank" rel="noopener">
-                <span class="pr-repo">{p.org}/{p.name}</span>
-                {p.roleNote && <span class="pr-what">{p.roleNote}</span>}
-                <span class="pr-meta">{[p.language, p.stars > 0 ? `★ ${p.stars}` : null].filter(Boolean).join(' · ')}</span>
-              </a>
-            ))}
-          </div>
-        )}
       </div>
     </section>
 

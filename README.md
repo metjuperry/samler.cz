@@ -67,7 +67,8 @@ anything claimed here can be checked against the repo's commit history. Keep it 
 
 `group` decides which section a card lands in: `team` (the TALXIS stack), `external`
 ("Contributions to first-party repositories" - merged PRs to Microsoft's projects; point
-`repo` at the PR itself, not the repo root, since that's the actual evidence), or `personal` (things I built and maintain
+`repo` at the PR itself, not the repo root, since that's the actual evidence; these also need a
+`pr: { number, merged, change }` block, which drives the feature card), or `personal` (things I built and maintain
 myself). A group with no entries doesn't render its section.
 
 ## Generated assets

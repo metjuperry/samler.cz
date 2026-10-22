@@ -63,10 +63,23 @@ const projects = defineCollection({
     // but is not a significant committer. Keeps the page checkable against GitHub.
     role: z.enum(['author', 'maintainer', 'contributor', 'team']),
     roleNote: z.string().optional(),
+    /**
+     * External contributions only: the merged PR, shown as a feature card and in
+     * the credential strip under the hero. `change` is what the PR did, in a line.
+     */
+    pr: z.object({
+      number: z.number().int().positive(),
+      merged: z.string(),
+      change: z.string(),
+    }).optional(),
     stars: z.number().int().nonnegative().default(0),
     group: z.enum(['team', 'external', 'personal']),
     order: z.number().int().default(100),
     summary: z.string(),
+  }).superRefine((p, ctx) => {
+    if (p.group === 'external' && !p.pr) {
+      ctx.addIssue({ code: 'custom', message: 'external contributions need a `pr`', path: ['pr'] });
+    }
   }),
 });
 
